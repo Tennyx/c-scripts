@@ -2,6 +2,8 @@
 
 typedef unsigned char *byte_pointer;
 
+////////// 2.55 //////////
+
 void show_bytes(byte_pointer start, int len){
 	int i;
 	for(i=0; i<len; i++){
@@ -22,6 +24,8 @@ void show_pointer(void *x){
 	show_bytes((byte_pointer) &x, sizeof(void *));
 }
 
+///////// 2.57 //////////
+
 void show_short(short x){
 	show_bytes((byte_pointer) &x, sizeof(short));
 }
@@ -34,15 +38,26 @@ void show_double(double x){
 	show_bytes((byte_pointer) &x, sizeof(double));
 }
 
+////////// 2.55 //////////
+
 int is_little_endian(){
 	short sample_byte = 1;
 	return sample_byte;	
 }
 
+////////// 2.59 //////////
+
 void byte_mesh(int x, int y){
-	// combines least significant byte of x with remaining bytes of y
-	int *x_pointer = &x;
-	printf("%x\n", *x_pointer);
+	int x_masked = x & 0xFF;
+	int y_masked = y & ~0xFF;
+	int new_byte = x_masked | y_masked;
+	printf("%x\n", new_byte);
+}
+
+////////// 2.60 //////////
+
+unsigned replace_byte(unsigned x, int i, unsigned char b){
+		
 }
 
 
@@ -53,6 +68,7 @@ int main(){
 	show_long(32767);
 	show_double(32.32);
 	printf("%d\n", is_little_endian());
-	byte_mesh(0x89ABCDEF,2);
+	byte_mesh(0x89ABCDEF, 0x76543210);
+	replace_byte(0x12345678, 2, 0xAB);
 	return 0;
 }
