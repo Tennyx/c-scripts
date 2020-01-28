@@ -62,9 +62,17 @@ unsigned replace_byte(unsigned x, int i, unsigned char b){
 	return x_masked | b_mask;	
 }
 
+////////// 2.61 //////////
+
+//// A & B ////
+
+int contains_flagged_bit(int x){
+	return !!(x);
+}
+
 
 int main(){
-	show_int(255);
+/*	show_int(255);
 	show_float(1.5);
 	show_short(1);
 	show_long(32767);
@@ -72,5 +80,7 @@ int main(){
 	printf("%d\n", is_little_endian());
 	byte_mesh(0x89ABCDEF, 0x76543210);
 	printf("%X\n", replace_byte(0x12345678, 0, 0xAB));
+*/
+	printf("%d\n", contains_flagged_bit(0));
 	return 0;
 }
