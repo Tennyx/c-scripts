@@ -70,6 +70,34 @@ int contains_flagged_bit(int x){
 	return !!(x);
 }
 
+//// C ////
+
+int lsb_contains_flagged_bit(int x){
+	return contains_flagged_bit(x & 0xFF);
+}
+
+//// D ////
+
+int msb_contains_flagged_bit(int x){
+	int shift_val = (sizeof(x)-1) << 3;
+	int xright = x >> shift_val;	
+	return lsb_contains_flagged_bit(xright);
+}
+
+////////// 2.62 //////////
+
+int int_shifts_are_arithmetic(){
+	//I think this works, but need to test on logical right shift machine.
+	int x = -1;
+	int shift_val = (sizeof(x)-1) << 3;
+	return !!(x >> shift_val);
+}
+
+///////// 2.63 //////////
+
+unsigned srl(unsigned x, int k){
+	unsigned xsra = (int) x >> k;
+}
 
 int main(){
 /*	show_int(255);
@@ -80,7 +108,10 @@ int main(){
 	printf("%d\n", is_little_endian());
 	byte_mesh(0x89ABCDEF, 0x76543210);
 	printf("%X\n", replace_byte(0x12345678, 0, 0xAB));
-*/
 	printf("%d\n", contains_flagged_bit(0));
+	printf("%d\n", lsb_contains_flagged_bit(256));
+	printf("%d\n", msb_contains_flagged_bit(123456789));
+*/
+	printf("%d\n", int_shifts_are_arithmetic());
 	return 0;
 }
