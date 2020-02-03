@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <limits.h>
 
 typedef unsigned char *byte_pointer;
 
@@ -97,6 +98,29 @@ int int_shifts_are_arithmetic(){
 
 unsigned srl(unsigned x, int k){
 	unsigned xsra = (int) x >> k;
+	int word_size = 8 * sizeof(int);
+	int mask = INT_MAX << (word_size - k);
+	return xsra ^ mask;
+}
+
+int sra(int x, int k){
+	int xsrl = (unsigned) x >> k;
+	int word_size = 8 * sizeof(int);
+	int mask = INT_MAX << (word_size - k);
+	return xsrl | mask; 
+}
+
+////////// 2.64 //////////
+
+int any_odd_one(unsigned x){
+	int odds_mask = 0x55555555;   //01010101010101010101010101010101 
+	return !!(x & odds_mask);
+}
+
+////////// 2.65 //////////
+
+int odd_ones(unsigned x){
+	return 0;
 }
 
 int main(){
@@ -111,7 +135,11 @@ int main(){
 	printf("%d\n", contains_flagged_bit(0));
 	printf("%d\n", lsb_contains_flagged_bit(256));
 	printf("%d\n", msb_contains_flagged_bit(123456789));
-*/
 	printf("%d\n", int_shifts_are_arithmetic());
+	printf("%d\n", srl(-2147483648,5));
+	printf("%d\n", sra(-2147483648,31));
+	printf("%d\n", any_odd_one(5));
+*/
+	printf("%d\n", odd_ones(1));
 	return 0;
 }
