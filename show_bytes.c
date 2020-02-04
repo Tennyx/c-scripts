@@ -120,7 +120,15 @@ int any_odd_one(unsigned x){
 ////////// 2.65 //////////
 
 int odd_ones(unsigned x){
-	return 0;
+	x ^= x >> 16;
+	x ^= x >> 8;
+	x ^= x >> 4;
+	x ^= x >> 2;
+	x ^= x >> 1;
+
+	return (x & 1);
+//	x &= 0xf;
+//	return (0x6996 >> x) & 1;
 }
 
 int main(){
@@ -140,6 +148,6 @@ int main(){
 	printf("%d\n", sra(-2147483648,31));
 	printf("%d\n", any_odd_one(5));
 */
-	printf("%d\n", odd_ones(1));
+	printf("%d\n", odd_ones(8));
 	return 0;
 }
