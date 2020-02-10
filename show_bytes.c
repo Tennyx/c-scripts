@@ -159,6 +159,41 @@ int lower_one_mask(int n){
 	return ~(val << n);		
 }
 
+////////// 2.69 //////////
+
+unsigned rotate_left(unsigned x, int n){
+	int word_size = 8 * sizeof(x);
+	unsigned mask_one = x >> (word_size - n);
+	unsigned mask_two = x << n;
+	return mask_one | mask_two;
+}
+
+////////// 2.70 //////////
+
+int fits_bits(int x, int n){
+	int word_size = 8 * sizeof(int);
+	int val = (1 << (word_size - 1)) >> (word_size -1);
+	int bit_size_mask = (val << (n -1)) << 1;
+	return !(x & bit_size_mask);
+}
+
+////////// 2.71 //////////
+
+//// A ////
+
+// It shifts right without shifting left to account for sign extensions. Also returns unsigned value.
+
+//// B ////
+
+typedef unsigned packed_t;
+
+int xbyte(packed_t word, int bytenum){
+	int shift_difference = 24 - (bytenum << 3);
+	int shift_left = word << shift_difference;
+	int shift_right = shift_left >> shift_difference;
+	return shift_right >> (bytenum << 3);
+}
+
 int main(){
 /*	show_int(255);
 	show_float(1.5);
@@ -178,7 +213,10 @@ int main(){
 	printf("%d\n", odd_ones(8));
 	printf("%x\n", leftmost(0xFF00));
 	printf("%d\n", int_size_is_32());
-*/
 	printf("%x\n", lower_one_mask(17));
+	printf("%x\n", rotate_left(0x12345678, 0));
+	printf("%x\n", fits_bits(-1, 32));
+*/
+	printf("%x\n", xbyte(0x99887766, 3));
 	return 0;
 }
