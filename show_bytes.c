@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <limits.h>
+#include <string.h>
 
 typedef unsigned char *byte_pointer;
 
@@ -194,6 +195,50 @@ int xbyte(packed_t word, int bytenum){
 	return shift_right >> (bytenum << 3);
 }
 
+////////// 2.72 //////////
+
+/*
+bugged version
+
+void copy_int(int val, void *buf, int maxbytes){
+	if(maxbytes - sizeof(val) >= 0){
+		memcpy(buf, (void *) &val, sizeof(val));
+	}
+}
+*/
+
+//// A ////
+
+// Conditional test always succeeds because it's cast to unsigned and thus can never be negative.
+
+//// B ////
+
+// correct version
+
+void copy_int(int val, void *buf, int maxbytes){
+	if(maxbytes >= sizeof(val)){
+		memcpy(buf, (void*) &val, sizeof(val));
+	}
+}
+
+////////// 2.73 //////////
+
+int saturating_add(int x, int y){
+	int sum = x + y;
+    	int pos_overflow = !(x & INT_MIN) && !(y & INT_MIN) &&  (sum & INT_MIN);
+    	int neg_overflow =  (x & INT_MIN) &&  (y & INT_MIN) && !(sum & INT_MIN);
+	
+	(!pos_overflow || (sum = INT_MAX)) && (!neg_overflow || (sum = INT_MIN));
+	
+	return sum;
+}
+
+////////// 2.74 //////////
+
+int tsub_ok(int x, int y){
+	return 1;
+}
+
 int main(){
 /*	show_int(255);
 	show_float(1.5);
@@ -216,7 +261,8 @@ int main(){
 	printf("%x\n", lower_one_mask(17));
 	printf("%x\n", rotate_left(0x12345678, 0));
 	printf("%x\n", fits_bits(-1, 32));
-*/
 	printf("%x\n", xbyte(0x99887766, 3));
+*/
+	printf("%x\n", saturating_add(2147483647, 1));
 	return 0;
 }
