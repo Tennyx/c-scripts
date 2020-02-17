@@ -221,7 +221,7 @@ void copy_int(int val, void *buf, int maxbytes){
 	}
 }
 
-////////// 2.73 //////////
+////////// 2.73 //////////***
 
 int saturating_add(int x, int y){
 	int sum = x + y;
@@ -233,10 +233,13 @@ int saturating_add(int x, int y){
 	return sum;
 }
 
-////////// 2.74 //////////
+////////// 2.74 //////////***
 
 int tsub_ok(int x, int y){
-	return 1;
+    int subt = x - y;    
+    int negative_overflow = (x < 0 && y >= 0) && subt > 0;
+    int positive_overflow = (x >= 0 && y < 0) && subt < 0;
+    return !positive_overflow && !negative_overflow; 
 }
 
 int main(){
@@ -262,7 +265,8 @@ int main(){
 	printf("%x\n", rotate_left(0x12345678, 0));
 	printf("%x\n", fits_bits(-1, 32));
 	printf("%x\n", xbyte(0x99887766, 3));
-*/
 	printf("%x\n", saturating_add(2147483647, 1));
+*/
+	printf("%x\n", tsub_ok(1, -5));
 	return 0;
 }
